@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Baking Time</string>
+
+    <!-- Main Activity/Fragment -->
+    <string name="main_title">Baking Time</string>
+    <string name="main_serving_size_label">Serving Size:</string>
+
+    <!-- Details Activity/Fragment -->
+
+</resources>
