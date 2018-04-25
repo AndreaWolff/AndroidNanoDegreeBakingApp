@@ -14,4 +14,8 @@ public class BaseFragment extends Fragment {
         getActivity().startActivity(intent);
     }
 
+    protected void finishActivity() {
+        getActivity().finish();
+    }
+
 }

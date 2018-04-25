@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface DetailsContract {
     interface View {
-        void renderScreenTitle(@NonNull String name);
+        void renderScreenTitle(@NonNull String title);
 
         void showIngredients(@NonNull List<Ingredient> ingredients);
 

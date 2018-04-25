@@ -33,7 +33,6 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
     MainPresenter presenter;
 
     public MainFragment() {
-        // Used to initialize MainFragment
     }
 
     @Nullable
@@ -57,6 +56,7 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
         return rootView;
     }
 
+    // region View methods
     @Override
     public void showRecipeList(@NonNull List<Recipe> recipes) {
         RecipeAdapter adapter = new RecipeAdapter(this, recipes);
@@ -77,6 +77,7 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
     public void navigateToRecipeDetails(@NonNull Intent intent) {
         navigateToIntent(intent);
     }
+    // endregion
 
     @Override
     public void onListItemClicked(@NonNull Recipe recipe) {
