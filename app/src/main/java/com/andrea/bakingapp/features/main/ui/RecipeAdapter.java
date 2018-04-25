@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.andrea.bakingapp.R;
 import com.andrea.bakingapp.features.common.domain.Recipe;
+import com.andrea.bakingapp.util.GlideUtil;
 
 import java.util.List;
 
@@ -47,19 +48,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
         private TextView recipeNameTextView;
         private TextView recipeServingSize;
-//        private ImageView recipeImage;
+        private ImageView recipeImage;
 
         RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
             recipeNameTextView = itemView.findViewById(R.id.recipeNameTextView);
             recipeServingSize = itemView.findViewById(R.id.recipeServingSize);
-//            recipeImage = itemView.findViewById(R.id.recipeImage);
+            recipeImage = itemView.findViewById(R.id.recipeImage);
             itemView.setOnClickListener(this);
         }
 
         void bind(int listItem) {
             recipeNameTextView.setText(recipeList.get(listItem).getName());
             recipeServingSize.setText(String.valueOf(recipeList.get(listItem).getServings()));
+
+            GlideUtil.displayImage(recipeList.get(listItem).getImage(), recipeImage);
         }
 
         @Override

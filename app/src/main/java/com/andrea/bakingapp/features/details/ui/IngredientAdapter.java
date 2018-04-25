@@ -12,11 +12,14 @@ import com.andrea.bakingapp.features.common.domain.Ingredient;
 
 import java.util.List;
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.IngredientsViewHolder> {
+import static com.andrea.bakingapp.util.ConversionUtil.convertToInteger;
+import static com.andrea.bakingapp.util.ConversionUtil.convertToMeasurementName;
+
+public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.IngredientsViewHolder> {
 
     private List<Ingredient> ingredients;
 
-    IngredientsAdapter(@NonNull List<Ingredient> ingredients) {
+    IngredientAdapter(@NonNull List<Ingredient> ingredients) {
         this.ingredients = ingredients;
     }
 
@@ -54,19 +57,12 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
             float quantity = ingredients.get(listItem).getQuantity();
             if (quantity % 1 == 0) {
-                int fullQuantity = (int) quantity;
-                quantityTextView.setText(String.valueOf(fullQuantity));
+                quantityTextView.setText(String.valueOf(convertToInteger(quantity)));
             } else {
                 quantityTextView.setText(String.valueOf(quantity));
             }
 
-            String measure = ingredients.get(listItem).getMeasure();
-            if ("G".equalsIgnoreCase(measure)) {
-                measure = "GRAMS";
-            } else if ("K".equalsIgnoreCase(measure)) {
-                measure = "KG";
-            }
-            measureTextView.setText(measure);
+            measureTextView.setText(convertToMeasurementName(ingredients.get(listItem).getMeasure()));
         }
     }
 }

@@ -27,14 +27,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:alpha="0.7"
-            android:background="#f5f2fc"
+            android:background="@drawable/border"
             android:contentDescription="@null"
             android:padding="20dp"
-            android:src="@drawable/icon_photo"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-        />
+            tools:src="@drawable/icon_photo"
+            />
 
         <TextView
             android:id="@+id/recipeNameTextView"

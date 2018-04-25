@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -20,7 +19,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import static com.andrea.bakingapp.application.BakingApplication.getDagger;
-import static com.andrea.bakingapp.util.RecyclerViewDividerUtil.createRecyclerViewDivider;
+import static com.andrea.bakingapp.util.DividerUtil.createRecyclerViewDivider;
 
 public class DetailsActivity extends AppCompatActivity implements DetailsContract.View, StepAdapter.ListItemClickedListener {
 
@@ -67,7 +66,7 @@ public class DetailsActivity extends AppCompatActivity implements DetailsContrac
 
     @Override
     public void showIngredients(@NonNull List<Ingredient> ingredients) {
-        IngredientsAdapter adapter = new IngredientsAdapter(ingredients);
+        IngredientAdapter adapter = new IngredientAdapter(ingredients);
         ingredientsRecyclerView.setAdapter(adapter);
     }
 

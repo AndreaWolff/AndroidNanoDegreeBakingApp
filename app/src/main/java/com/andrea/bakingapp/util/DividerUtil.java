@@ -6,7 +6,7 @@ import android.support.v7.widget.OrientationHelper;
 
 import com.andrea.bakingapp.application.BakingApplication;
 
-public class RecyclerViewDividerUtil {
+public class DividerUtil {
 
     @NonNull public static DividerItemDecoration createRecyclerViewDivider() {
         return new DividerItemDecoration(BakingApplication.getDagger().getContext(), OrientationHelper.VERTICAL);

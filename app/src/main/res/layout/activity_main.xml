@@ -1,18 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<fragment
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainRecipeList"
+    android:name="com.andrea.bakingapp.features.main.ui.MainFragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".features.main.ui.MainActivity"
-    >
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/recipeRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:padding="8dp"
-        />
-
-</android.support.constraint.ConstraintLayout>
+    />
