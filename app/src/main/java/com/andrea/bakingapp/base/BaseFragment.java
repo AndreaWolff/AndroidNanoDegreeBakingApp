@@ -6,6 +6,9 @@ import android.support.v4.app.Fragment;
 
 public class BaseFragment extends Fragment {
 
+    public BaseFragment() {
+    }
+
     protected void setTitle(@NonNull String title) {
         getActivity().setTitle(title);
     }

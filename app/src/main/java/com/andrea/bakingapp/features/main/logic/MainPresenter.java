@@ -11,7 +11,6 @@ import com.andrea.bakingapp.features.common.domain.Recipe;
 import com.andrea.bakingapp.features.common.repository.RecipeRepository;
 import com.andrea.bakingapp.features.details.ui.DetailsActivity;
 import com.andrea.bakingapp.features.main.MainContract;
-import com.andrea.bakingapp.features.main.ui.MainActivity;
 
 import java.util.List;
 
@@ -48,6 +47,19 @@ public class MainPresenter {
             view.renderScreenTitle(context.getString(R.string.main_title));
         }
 
+        getRecipeList();
+    }
+
+    public void onViewDestroyed() {
+        disposable.dispose();
+        view = null;
+    }
+
+    private void getRecipeList() {
+        if (view != null) {
+            view.showLoadingIndicator();
+        }
+
         disposable.add(recipeRepository.getRecipes()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(this::handleRecipeResponseSuccessful, this::handleResponseError));
@@ -55,12 +67,14 @@ public class MainPresenter {
 
     private void handleRecipeResponseSuccessful(List<Recipe> recipes) {
         if (view != null) {
+            view.hideLoadingIndicator();
             view.showRecipeList(recipes);
         }
     }
 
     private void handleResponseError(Throwable throwable) {
         if (view != null) {
+            view.hideLoadingIndicator();
             view.showError(throwable.getMessage());
         }
     }

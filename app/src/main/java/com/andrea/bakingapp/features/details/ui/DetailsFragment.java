@@ -33,9 +33,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     @Inject
     DetailsPresenter presenter;
 
-    public DetailsFragment() {
-    }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,6 +57,12 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         presenter.connectView(this, savedInstanceState, getActivity().getIntent().getExtras());
 
         return rootView;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onViewDestroyed();
     }
 
     // region View methods

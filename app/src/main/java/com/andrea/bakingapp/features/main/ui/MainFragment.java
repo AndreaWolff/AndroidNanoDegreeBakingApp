@@ -23,6 +23,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 import static com.andrea.bakingapp.application.BakingApplication.getDagger;
 
 public class MainFragment extends BaseFragment implements MainContract.View, RecipeAdapter.ListItemClickListener {
@@ -31,9 +33,6 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
 
     @Inject
     MainPresenter presenter;
-
-    public MainFragment() {
-    }
 
     @Nullable
     @Override
@@ -56,6 +55,12 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
         return rootView;
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onViewDestroyed();
+    }
+
     // region View methods
     @Override
     public void showRecipeList(@NonNull List<Recipe> recipes) {
@@ -76,6 +81,16 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
     @Override
     public void navigateToRecipeDetails(@NonNull Intent intent) {
         navigateToIntent(intent);
+    }
+
+    @Override
+    public void showLoadingIndicator() {
+        binding.recipeLoadingIndicator.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hideLoadingIndicator() {
+        binding.recipeLoadingIndicator.setVisibility(GONE);
     }
     // endregion
 

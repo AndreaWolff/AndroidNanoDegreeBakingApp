@@ -16,5 +16,9 @@ public interface MainContract {
         void renderScreenTitle(@NonNull String title);
 
         void navigateToRecipeDetails(@NonNull Intent intent);
+
+        void showLoadingIndicator();
+
+        void hideLoadingIndicator();
     }
 }

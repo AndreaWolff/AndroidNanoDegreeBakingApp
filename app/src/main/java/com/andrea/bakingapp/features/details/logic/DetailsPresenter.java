@@ -55,6 +55,10 @@ public class DetailsPresenter {
         }
     }
 
+    public void onViewDestroyed() {
+        view = null;
+    }
+
     public void onStepSelected(@NonNull Step step) {
         if (view != null) {
             Intent intent = new Intent(context, InstructionActivity.class);
