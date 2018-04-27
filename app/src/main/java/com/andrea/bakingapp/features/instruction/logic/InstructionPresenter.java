@@ -58,7 +58,14 @@ public class InstructionPresenter {
     private void init() {
         if (view != null) {
             view.renderScreenTitle(recipe.getName());
-            view.showRecipeInstructions(step.getShortDescription(), step.getDescription());
+
+            String shortDescription = step.getShortDescription();
+            String description = step.getDescription();
+            if (shortDescription.equals(description)) {
+                description = "This recipe will teach you how to bake " + recipe.getName() + ".";
+            }
+
+            view.showRecipeInstructions(shortDescription, description);
 
             String videoURL = step.getVideoURL();
             if (!videoURL.isEmpty()) {

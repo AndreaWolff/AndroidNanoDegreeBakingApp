@@ -5,7 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +46,7 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
                            .build()
                            .inject(this);
 
-        binding.recipeRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        binding.recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), this.getResources().getInteger(R.integer.grid_column)));
         binding.recipeRecyclerView.setHasFixedSize(true);
         binding.recipeRecyclerView.setNestedScrollingEnabled(false);
 
