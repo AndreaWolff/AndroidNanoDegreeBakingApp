@@ -2,7 +2,7 @@ package com.andrea.bakingapp.dagger.component;
 
 import com.andrea.bakingapp.dagger.module.InstructionModule;
 import com.andrea.bakingapp.dagger.scope.PerActivity;
-import com.andrea.bakingapp.features.instruction.ui.InstructionActivity;
+import com.andrea.bakingapp.features.instruction.ui.InstructionFragment;
 
 import dagger.Component;
 
@@ -10,6 +10,6 @@ import dagger.Component;
 @Component(dependencies = AppComponent.class, modules = InstructionModule.class)
 public interface InstructionComponent {
 
-    void inject(InstructionActivity activity);
+    void inject(InstructionFragment fragment);
 
 }

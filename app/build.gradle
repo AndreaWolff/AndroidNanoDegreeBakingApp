@@ -72,6 +72,9 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
 
+    // EventBus taken from https://github.com/greenrobot/EventBus
+    implementation 'org.greenrobot:eventbus:3.1.1'
+
     // Mockito taken from http://site.mockito.org/
     testImplementation 'org.mockito:mockito-core:2.8.47'
     androidTestImplementation 'org.mockito:mockito-android:2.8.47'

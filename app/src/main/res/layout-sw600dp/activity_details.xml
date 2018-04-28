@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
+    android:baselineAligned="false"
+    tools:context=".features.details.ui.DetailsActivity"
+    >
+
+    <fragment
+        android:id="@+id/recipeDetails"
+        android:name="com.andrea.bakingapp.features.details.ui.DetailsFragment"
+        android:layout_width="300dp"
+        android:layout_height="match_parent"
+        />
+
+    <View
+        android:id="@+id/recipeInstructionsDivider"
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/colorDivider"
+        />
+
+    <FrameLayout
+        android:id="@+id/recipeInstructions"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+
+</LinearLayout>

@@ -1,6 +1,6 @@
 package com.andrea.bakingapp.features.details.ui;
 
-import android.content.Intent;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,11 +9,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.andrea.bakingapp.R;
 import com.andrea.bakingapp.base.BaseFragment;
 import com.andrea.bakingapp.dagger.component.DaggerDetailsComponent;
 import com.andrea.bakingapp.features.common.domain.Ingredient;
+import com.andrea.bakingapp.features.common.domain.Recipe;
 import com.andrea.bakingapp.features.common.domain.Step;
 import com.andrea.bakingapp.features.details.DetailsContract;
 import com.andrea.bakingapp.features.details.logic.DetailsPresenter;
@@ -26,6 +28,12 @@ import static com.andrea.bakingapp.application.BakingApplication.getDagger;
 import static com.andrea.bakingapp.util.DividerUtil.createRecyclerViewDivider;
 
 public class DetailsFragment extends BaseFragment implements DetailsContract.View, StepAdapter.ListItemClickedListener {
+
+    private OnStepClickedListener onStepClickedListener;
+
+    public interface OnStepClickedListener {
+        void onStepClicked(@NonNull Step step, @NonNull Recipe recipe);
+    }
 
     private RecyclerView ingredientsRecyclerView;
     private RecyclerView stepsRecyclerView;
@@ -60,6 +68,35 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            onStepClickedListener = (OnStepClickedListener) context;
+        } catch (ClassCastException e) {
+            Toast.makeText(context, context + " must be implemented", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        presenter.onSavedInstanceState(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
@@ -78,8 +115,8 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
     @Override
-    public void showSteps(@NonNull List<Step> steps) {
-        StepAdapter adapter = new StepAdapter(this, steps);
+    public void showSteps(@NonNull List<Step> steps, @NonNull Recipe recipe) {
+        StepAdapter adapter = new StepAdapter(this, steps, recipe);
         stepsRecyclerView.setAdapter(adapter);
     }
 
@@ -87,15 +124,10 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     public void finishScreen() {
         finishActivity();
     }
-
-    @Override
-    public void navigateToRecipeDetails(@NonNull Intent intent) {
-        navigateToIntent(intent);
-    }
     // endregion
 
     @Override
-    public void onListItemClicked(@NonNull Step step) {
-        presenter.onStepSelected(step);
+    public void onListItemClicked(@NonNull Step step, @NonNull Recipe recipe) {
+        onStepClickedListener.onStepClicked(step, recipe);
     }
 }

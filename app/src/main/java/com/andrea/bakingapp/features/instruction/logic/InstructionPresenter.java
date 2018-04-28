@@ -116,4 +116,5 @@ public class InstructionPresenter {
         simpleExoPlayer.release();
         simpleExoPlayer = null;
     }
+
 }

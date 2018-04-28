@@ -7,7 +7,7 @@ import com.google.android.exoplayer2.SimpleExoPlayer;
 public interface InstructionContract {
     interface View {
 
-        void renderScreenTitle(@NonNull String name);
+        void renderScreenTitle(@NonNull String title);
 
         void showRecipeInstructions(@NonNull String label, @NonNull String instruction);
 

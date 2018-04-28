@@ -8,23 +8,25 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.andrea.bakingapp.R;
+import com.andrea.bakingapp.features.common.domain.Recipe;
 import com.andrea.bakingapp.features.common.domain.Step;
-import com.andrea.bakingapp.features.main.ui.RecipeAdapter;
 
 import java.util.List;
 
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolder> {
 
     private List<Step> steps;
+    private Recipe recipe;
     private ListItemClickedListener listItemClickedListener;
 
     public interface ListItemClickedListener {
-        void onListItemClicked(@NonNull Step step);
+        void onListItemClicked(@NonNull Step step, @NonNull Recipe recipe);
     }
 
-    StepAdapter(@NonNull ListItemClickedListener listItemClickedListener, @NonNull List<Step> steps) {
+    StepAdapter(@NonNull ListItemClickedListener listItemClickedListener, @NonNull List<Step> steps, @NonNull Recipe recipe) {
         this.listItemClickedListener = listItemClickedListener;
         this.steps = steps;
+        this.recipe = recipe;
     }
 
     @Override
@@ -59,7 +61,8 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolde
 
         @Override
         public void onClick(View view) {
-            listItemClickedListener.onListItemClicked(steps.get(getAdapterPosition()));
+//            EventBus.getDefault().post(new StepEvent(steps.get(getAdapterPosition())));
+            listItemClickedListener.onListItemClicked(steps.get(getAdapterPosition()), recipe);
         }
     }
 }
