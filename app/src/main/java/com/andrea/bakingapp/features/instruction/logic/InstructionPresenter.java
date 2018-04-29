@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
+import com.andrea.bakingapp.R;
 import com.andrea.bakingapp.features.common.domain.Recipe;
 import com.andrea.bakingapp.features.common.domain.Step;
 import com.andrea.bakingapp.features.instruction.InstructionContract;
@@ -165,7 +166,7 @@ public class InstructionPresenter {
 
     private void configureInstructionDescriptions(String shortDescription, String description) {
         if (shortDescription.equals(description)) {
-            description = "This recipe will teach you how to bake " + recipe.getName() + ".";
+            description = context.getString(R.string.instruction_first_step, recipe.getName());
         }
 
         if (view != null) {
@@ -216,7 +217,7 @@ public class InstructionPresenter {
                 view.setPlayer(simpleExoPlayer);
             }
 
-            String userAgent = Util.getUserAgent(context, "bakingApp");
+            String userAgent = Util.getUserAgent(context, context.getString(R.string.instruction_app_name));
             MediaSource mediaSource = new ExtractorMediaSource(uri,
                     new DefaultDataSourceFactory(context, userAgent),
                     new DefaultExtractorsFactory(), null, null);

@@ -7,4 +7,11 @@
 
     <!-- Details Activity/Fragment -->
 
+
+    <!-- Instruction Activity/Fragment -->
+    <string name="instruction_app_name">bakingApp</string>
+    <string name="instruction_first_step">This recipe will teach you how to bake a %1$s.</string>
+    <string name="instruction_next_button">Next</string>
+    <string name="instruction_previous_button">Previous</string>
+
 </resources>

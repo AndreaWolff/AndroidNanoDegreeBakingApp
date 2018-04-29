@@ -21,4 +21,14 @@ public class InstructionActivity extends AppCompatActivity {
                        .commit();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        InstructionFragment fragment = new InstructionFragment();
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.recipeInstructions, fragment)
+                .commit();
+    }
 }
