@@ -49,6 +49,13 @@ public class InstructionPresenter {
         this.view = view;
         this.inTabletMode = inTabletMode;
 
+        if (savedInstanceState != null) {
+            recipe = savedInstanceState.getParcelable(RECIPE);
+            step = savedInstanceState.getParcelable(STEP);
+            init();
+            return;
+        }
+
         if (extras == null) {
             assert view != null;
             view.finishScreen();
@@ -78,6 +85,11 @@ public class InstructionPresenter {
         }
 
         configureActionButtons();
+    }
+
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putParcelable(RECIPE, recipe);
+        outState.putParcelable(STEP, step);
     }
 
     public void onViewDestroyed() {
@@ -189,6 +201,7 @@ public class InstructionPresenter {
             }
 
             view.hideVideo();
+            releasePlayer();
         }
     }
 

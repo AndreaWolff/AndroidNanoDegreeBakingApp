@@ -22,7 +22,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".features.details.ui.DetailsActivity"
-                  android:parentActivityName=".features.main.ui.MainActivity">
+                  android:parentActivityName=".features.main.ui.MainActivity"
+                  android:launchMode="singleTop"
+                  >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".features.main.ui.MainActivity"/>

@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -85,24 +84,15 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
-        presenter.onViewDestroyed();
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        presenter.onSaveInstanceState(outState);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (android.R.id.home == item.getItemId()) {
-//            FragmentManager fm = getActivity().getSupportFragmentManager();
-//            if (fm.getBackStackEntryCount() > 0) {
-//                fm.popBackStack();
-//            }
-//            return true;
-//            finishActivity();
-//            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
+    public void onDestroy() {
+        super.onDestroy();
+        presenter.onViewDestroyed();
     }
 
     // region View methods

@@ -15,20 +15,18 @@ public class InstructionActivity extends AppCompatActivity {
 
         InstructionFragment fragment = new InstructionFragment();
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                       .add(R.id.recipeInstructions, fragment)
-                       .commit();
+        if (savedInstanceState == null) {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .add(R.id.recipeInstructions, fragment)
+                    .commit();
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        InstructionFragment fragment = new InstructionFragment();
-
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.recipeInstructions, fragment)
-                .commit();
+        fragmentManager.findFragmentById(R.id.recipeInstructions);
     }
 }
