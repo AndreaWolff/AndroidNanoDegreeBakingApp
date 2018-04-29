@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,6 +37,9 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     private ImageView instructionImageView;
     private TextView instructionLabelTextView;
     private TextView instructionTextView;
+    private Button nextButton;
+    private Button previousButton;
+    private boolean inTabletMode;
 
     @Nullable
     @Override
@@ -51,10 +55,19 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
         instructionImageView = rootView.findViewById(R.id.instructionNoVideo);
         instructionLabelTextView = rootView.findViewById(R.id.instructionLabelTextView);
         instructionTextView = rootView.findViewById(R.id.instructionTextView);
+        nextButton = rootView.findViewById(R.id.nextButton);
+        previousButton = rootView.findViewById(R.id.previousButton);
 
         simpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.icon_no_video));
 
-        presenter.connectView(this, savedInstanceState, getBundle(getActivity().getIntent().getExtras(), getArguments()));
+        nextButton.setOnClickListener(v -> presenter.nextSelected());
+        previousButton.setOnClickListener(v -> presenter.previousSelected());
+
+        if (getActivity().findViewById(R.id.recipeInstructionsDivider) != null) {
+            inTabletMode = true;
+        }
+
+        presenter.connectView(this, savedInstanceState, getBundle(getActivity().getIntent().getExtras(), getArguments()), inTabletMode);
 
         return rootView;
     }
@@ -119,6 +132,26 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     @Override
     public void setPlayer(@NonNull SimpleExoPlayer simpleExoPlayer) {
         simpleExoPlayerView.setPlayer(simpleExoPlayer);
+    }
+
+    @Override
+    public void showNextButton() {
+        nextButton.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hideNextButton() {
+        nextButton.setVisibility(GONE);
+    }
+
+    @Override
+    public void showPreviousButton() {
+        previousButton.setVisibility(VISIBLE);
+    }
+
+    @Override
+    public void hidePreviousButton() {
+        previousButton.setVisibility(GONE);
     }
 
     @Override

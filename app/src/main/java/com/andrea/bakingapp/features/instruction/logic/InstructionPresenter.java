@@ -21,6 +21,9 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.inject.Inject;
 
 import static com.andrea.bakingapp.features.common.ActivityConstants.RECIPE;
@@ -34,14 +37,16 @@ public class InstructionPresenter {
     private SimpleExoPlayer simpleExoPlayer;
     private Recipe recipe;
     private Step step;
+    private boolean inTabletMode;
 
     @Inject
     InstructionPresenter(@NonNull Context context) {
         this.context = context;
     }
 
-    public void connectView(@Nullable InstructionContract.View view, @Nullable Bundle savedInstanceState, @Nullable Bundle extras) {
+    public void connectView(@Nullable InstructionContract.View view, @Nullable Bundle savedInstanceState, @Nullable Bundle extras, boolean inTabletMode) {
         this.view = view;
+        this.inTabletMode = inTabletMode;
 
         if (extras == null) {
             assert view != null;
@@ -58,23 +63,124 @@ public class InstructionPresenter {
     private void init() {
         if (view != null) {
             view.renderScreenTitle(recipe.getName());
+        }
 
-            String shortDescription = step.getShortDescription();
-            String description = step.getDescription();
-            if (shortDescription.equals(description)) {
-                description = "This recipe will teach you how to bake " + recipe.getName() + ".";
+        configureInstructionDescriptions(step.getShortDescription(), step.getDescription());
+        configureInstructionVideo(step.getVideoURL(), step.getThumbnailURL());
+
+        if (inTabletMode) {
+            if (view != null) {
+                view.hideNextButton();
+                view.hidePreviousButton();
             }
+            return;
+        }
 
+        configureActionButtons();
+    }
+
+    public void onViewDestroyed() {
+        view = null;
+        releasePlayer();
+    }
+
+    public void nextSelected() {
+        List<Step> stepList = new ArrayList<>(recipe.getSteps());
+        int currentIndex;
+
+        if (stepList.isEmpty()) {
+            return;
+        }
+
+        for (Step step : stepList) {
+            if (this.step.getId() == step.getId()) {
+                currentIndex = step.getId();
+                currentIndex += 1;
+
+                int stepID = stepList.get(currentIndex).getId();
+                if (stepID >= 1) {
+                    if (view != null) {
+                        view.showPreviousButton();
+                    }
+                }
+
+                if (stepID == 0) {
+                    if (view != null) {
+                        view.hidePreviousButton();
+                    }
+                }
+
+                if (stepList.get(currentIndex) != null && currentIndex < stepList.size()) {
+                    configureInstructionDetails(stepList, currentIndex);
+
+                    if (currentIndex == stepList.size() - 1) {
+                        view.hideNextButton();
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    public void previousSelected() {
+        List<Step> stepList = new ArrayList<>(recipe.getSteps());
+        int currentIndex;
+
+        if (stepList.isEmpty()) {
+            return;
+        }
+
+        for (Step step : stepList) {
+            if (this.step.getId() == step.getId()) {
+                currentIndex = step.getId();
+
+                if (currentIndex == stepList.size() -1) {
+                    if (view != null) {
+                        view.showNextButton();
+                    }
+                }
+
+                currentIndex -= 1;
+
+                if (stepList.get(currentIndex) != null && currentIndex < stepList.size()) {
+                    configureInstructionDetails(stepList, currentIndex);
+
+                    if (currentIndex == stepList.get(0).getId()) {
+                        if (view != null) {
+                            view.hidePreviousButton();
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    private void configureInstructionDetails(List<Step> stepList, int currentIndex) {
+        this.step = stepList.get(currentIndex);
+        releasePlayer();
+        configureInstructionDescriptions(this.step.getShortDescription(), this.step.getDescription());
+        configureInstructionVideo(this.step.getVideoURL(), this.step.getThumbnailURL());
+    }
+
+    private void configureInstructionDescriptions(String shortDescription, String description) {
+        if (shortDescription.equals(description)) {
+            description = "This recipe will teach you how to bake " + recipe.getName() + ".";
+        }
+
+        if (view != null) {
             view.showRecipeInstructions(shortDescription, description);
+        }
+    }
 
-            String videoURL = step.getVideoURL();
+    private void configureInstructionVideo(String videoURL, String thumbnailURL) {
+        if (view != null) {
             if (!videoURL.isEmpty()) {
                 view.showVideo();
                 initializePlayer(Uri.parse(videoURL));
                 return;
             }
 
-            String thumbnailURL = step.getThumbnailURL();
             if (!thumbnailURL.isEmpty()) {
                 view.showVideo();
                 initializePlayer(Uri.parse(thumbnailURL));
@@ -85,10 +191,18 @@ public class InstructionPresenter {
         }
     }
 
-    public void onViewDestroyed() {
-        view = null;
-        if (simpleExoPlayer != null) {
-            releasePlayer();
+    private void configureActionButtons() {
+        if (step.getId() > 0) {
+            if (view != null) {
+                view.showPreviousButton();
+            }
+        }
+
+        List<Step> steps = recipe.getSteps();
+        if (step.getId() == steps.size() -1) {
+            if (view != null) {
+                view.hideNextButton();
+            }
         }
     }
 
@@ -112,9 +226,10 @@ public class InstructionPresenter {
     }
 
     private void releasePlayer() {
-        simpleExoPlayer.stop();
-        simpleExoPlayer.release();
-        simpleExoPlayer = null;
+        if (simpleExoPlayer != null) {
+            simpleExoPlayer.stop();
+            simpleExoPlayer.release();
+            simpleExoPlayer = null;
+        }
     }
-
 }

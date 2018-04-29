@@ -17,6 +17,15 @@ public interface InstructionContract {
 
         void setPlayer(@NonNull SimpleExoPlayer simpleExoPlayer);
 
+        void showNextButton();
+
+        void hideNextButton();
+
+        void showPreviousButton();
+
+        void hidePreviousButton();
+
         void finishScreen();
+
     }
 }
