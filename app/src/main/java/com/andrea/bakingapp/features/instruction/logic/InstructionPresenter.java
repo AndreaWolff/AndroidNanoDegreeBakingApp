@@ -232,8 +232,8 @@ public class InstructionPresenter {
 
             String userAgent = Util.getUserAgent(context, context.getString(R.string.instruction_app_name));
             MediaSource mediaSource = new ExtractorMediaSource(uri,
-                    new DefaultDataSourceFactory(context, userAgent),
-                    new DefaultExtractorsFactory(), null, null);
+                                                               new DefaultDataSourceFactory(context, userAgent),
+                                                               new DefaultExtractorsFactory(), null, null);
             simpleExoPlayer.prepare(mediaSource);
             simpleExoPlayer.setPlayWhenReady(true);
         }

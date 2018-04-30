@@ -14,4 +14,8 @@
     <string name="instruction_next_button">Next</string>
     <string name="instruction_previous_button">Previous</string>
 
+    <!-- Widget -->
+    <string name="widget_text">Recipes</string>
+    <string name="widget_no_recipe">\n1. First Click Here! to select a recipe from Baking Time App.\n\n2. Remove this widget from your phone.\n\n3. Try Baking Time widget again.\n</string>
+
 </resources>

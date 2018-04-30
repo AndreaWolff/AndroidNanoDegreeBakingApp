@@ -85,18 +85,6 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        presenter.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        presenter.onPause();
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();

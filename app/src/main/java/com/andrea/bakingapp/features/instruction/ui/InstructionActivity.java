@@ -23,10 +23,4 @@ public class InstructionActivity extends AppCompatActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.findFragmentById(R.id.recipeInstructions);
-    }
 }

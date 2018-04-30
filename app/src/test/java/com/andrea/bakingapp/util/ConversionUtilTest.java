@@ -7,7 +7,7 @@ import org.junit.Test;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class InputUtilTest extends BaseUnitTest {
+public class ConversionUtilTest extends BaseUnitTest {
 
     @Test
     public void convertToInteger() {
