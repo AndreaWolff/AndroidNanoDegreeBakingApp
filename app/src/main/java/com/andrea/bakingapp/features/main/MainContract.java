@@ -11,7 +11,7 @@ public interface MainContract {
     interface View {
         void showRecipeList(@NonNull List<Recipe> recipes);
 
-        void showError(@NonNull String errorMessage);
+        void showError(@NonNull String errorTitle, @NonNull String errorMessage);
 
         void renderScreenTitle(@NonNull String title);
 

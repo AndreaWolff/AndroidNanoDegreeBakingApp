@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,7 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
         binding.recipeRecyclerView.setHasFixedSize(true);
         binding.recipeRecyclerView.setNestedScrollingEnabled(false);
 
-        presenter.connectView(this, savedInstanceState);
+        presenter.connectView(this);
 
         return rootView;
     }
@@ -69,8 +70,15 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
     }
 
     @Override
-    public void showError(@NonNull String errorMessage) {
-        Toast.makeText(getContext(), errorMessage, Toast.LENGTH_LONG).show();
+    public void showError(@NonNull String errorTitle, @NonNull String errorMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle(errorTitle)
+                .setMessage(errorMessage)
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                    // do nothing
+                });
+        builder.create();
+        builder.show();
     }
 
     @Override

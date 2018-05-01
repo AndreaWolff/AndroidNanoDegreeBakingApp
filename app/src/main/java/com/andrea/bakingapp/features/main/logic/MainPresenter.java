@@ -2,9 +2,9 @@ package com.andrea.bakingapp.features.main.logic;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.andrea.bakingapp.R;
 import com.andrea.bakingapp.features.common.domain.Recipe;
@@ -36,7 +36,7 @@ public class MainPresenter {
         this.context = context;
     }
 
-    public void connectView(@Nullable MainContract.View view, @Nullable Bundle savedInstanceState) {
+    public void connectView(@Nullable MainContract.View view) {
         this.view = view;
 
         init();
@@ -75,7 +75,7 @@ public class MainPresenter {
     private void handleResponseError(Throwable throwable) {
         if (view != null) {
             view.hideLoadingIndicator();
-            view.showError(throwable.getMessage());
+            configureErrorMessage(throwable);
         }
     }
 
@@ -85,5 +85,15 @@ public class MainPresenter {
             intent.putExtra(RECIPE, recipe);
             view.navigateToRecipeDetails(intent);
         }
+    }
+
+    private void configureErrorMessage(Throwable throwable) {
+        if (throwable.getMessage() == null) {
+            Log.d(context.getString(R.string.error_title_caps), context.getString(R.string.error_no_message));
+        } else {
+            Log.d(context.getString(R.string.error_title_caps), throwable.getMessage());
+        }
+
+        view.showError(context.getString(R.string.error_title), context.getString(R.string.error_message));
     }
 }

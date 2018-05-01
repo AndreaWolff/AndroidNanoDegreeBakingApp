@@ -24,6 +24,9 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.andrea.bakingapp.application.BakingApplication.getDagger;
 import static com.andrea.bakingapp.util.DividerUtil.createRecyclerViewDivider;
 
@@ -35,8 +38,8 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         void onStepClicked(@NonNull Step step, @NonNull Recipe recipe);
     }
 
-    private RecyclerView ingredientsRecyclerView;
-    private RecyclerView stepsRecyclerView;
+    @BindView(R.id.ingredientsRecyclerView) RecyclerView ingredientsRecyclerView;
+    @BindView(R.id.stepsRecyclerView) RecyclerView stepsRecyclerView;
 
     @Inject
     DetailsPresenter presenter;
@@ -46,17 +49,17 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_details, container, false);
 
+        ButterKnife.bind(this, rootView);
+
         DaggerDetailsComponent.builder()
                               .appComponent(getDagger())
                               .build()
                               .inject(this);
 
-        ingredientsRecyclerView = rootView.findViewById(R.id.ingredientsRecyclerView);
         ingredientsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ingredientsRecyclerView.setHasFixedSize(true);
         ingredientsRecyclerView.setNestedScrollingEnabled(false);
 
-        stepsRecyclerView = rootView.findViewById(R.id.stepsRecyclerView);
         stepsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         stepsRecyclerView.setHasFixedSize(true);
         stepsRecyclerView.setNestedScrollingEnabled(false);

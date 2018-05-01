@@ -68,8 +68,7 @@ public class DetailsPresenter {
     private void configureWidget() {
         // This widget code was inspired by https://github.com/amanjeetsingh150/Baking-App
         SharedPreferences sharedPreferences = context.getSharedPreferences(ActivityConstants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        String json = new Gson().toJson(recipe);
-        sharedPreferences.edit().putString(ActivityConstants.WIDGET_RESULT, json).apply();
+        sharedPreferences.edit().putString(ActivityConstants.WIDGET_RESULT, new Gson().toJson(recipe)).apply();
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
         int appWidgetId = new Bundle().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);

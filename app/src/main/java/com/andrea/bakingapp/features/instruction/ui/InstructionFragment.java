@@ -21,6 +21,10 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import javax.inject.Inject;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 import static android.view.View.GONE;
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
@@ -32,12 +36,12 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     @Inject
     InstructionPresenter presenter;
 
-    private SimpleExoPlayerView simpleExoPlayerView;
-    private ImageView instructionImageView;
-    private TextView instructionLabelTextView;
-    private TextView instructionTextView;
-    private Button nextButton;
-    private Button previousButton;
+    @BindView(R.id.instructionVideo) SimpleExoPlayerView simpleExoPlayerView;
+    @BindView(R.id.instructionNoVideo) ImageView instructionNoImageView;
+    @BindView(R.id.instructionLabelTextView) TextView instructionLabelTextView;
+    @BindView(R.id.instructionTextView) TextView instructionTextView;
+    @BindView(R.id.nextButton) Button nextButton;
+    @BindView(R.id.previousButton) Button previousButton;
     private boolean inTabletMode;
 
     @Nullable
@@ -45,22 +49,14 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_instruction, container, false);
 
+        ButterKnife.bind(this, rootView);
+
         DaggerInstructionComponent.builder()
                 .appComponent(getDagger())
                 .build()
                 .inject(this);
 
-        simpleExoPlayerView = rootView.findViewById(R.id.instructionVideo);
-        instructionImageView = rootView.findViewById(R.id.instructionNoVideo);
-        instructionLabelTextView = rootView.findViewById(R.id.instructionLabelTextView);
-        instructionTextView = rootView.findViewById(R.id.instructionTextView);
-        nextButton = rootView.findViewById(R.id.nextButton);
-        previousButton = rootView.findViewById(R.id.previousButton);
-
         simpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.icon_no_video));
-
-        nextButton.setOnClickListener(v -> presenter.nextSelected());
-        previousButton.setOnClickListener(v -> presenter.previousSelected());
 
         if (getActivity().findViewById(R.id.recipeInstructionsDivider) != null) {
             inTabletMode = true;
@@ -81,6 +77,16 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
         }
 
         return bundle;
+    }
+
+    @OnClick(R.id.nextButton)
+    public void onNextSelected() {
+        presenter.nextSelected();
+    }
+
+    @OnClick(R.id.previousButton)
+    public void onPreviousSelected() {
+        presenter.previousSelected();
     }
 
     @Override
@@ -110,13 +116,13 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     @Override
     public void showVideo() {
         simpleExoPlayerView.setVisibility(VISIBLE);
-        instructionImageView.setVisibility(GONE);
+        instructionNoImageView.setVisibility(GONE);
     }
 
     @Override
     public void hideVideo() {
         simpleExoPlayerView.setVisibility(INVISIBLE);
-        instructionImageView.setVisibility(VISIBLE);
+        instructionNoImageView.setVisibility(VISIBLE);
     }
 
     @Override

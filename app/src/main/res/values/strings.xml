@@ -6,13 +6,20 @@
     <string name="main_serving_size_label">Serving Size:</string>
 
     <!-- Details Activity/Fragment -->
-
+    <string name="details_ingredients_instructions">Below are the ingredients for this recipe:</string>
+    <string name="details_step_instructions">Below are the steps for this recipe:</string>
 
     <!-- Instruction Activity/Fragment -->
     <string name="instruction_app_name">bakingApp</string>
     <string name="instruction_first_step">This recipe will teach you how to bake a %1$s.</string>
     <string name="instruction_next_button">Next</string>
     <string name="instruction_previous_button">Previous</string>
+
+    <!-- Errors -->
+    <string name="error_title_caps">ERROR</string>
+    <string name="error_title">Error</string>
+    <string name="error_no_message">No error message to return</string>
+    <string name="error_message">There has been an issue with your request. Please try again later.</string>
 
     <!-- Widget -->
     <string name="widget_text">Recipes</string>

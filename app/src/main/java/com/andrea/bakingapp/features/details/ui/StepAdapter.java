@@ -13,6 +13,9 @@ import com.andrea.bakingapp.features.common.domain.Step;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolder> {
 
     private List<Step> steps;
@@ -47,11 +50,13 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolde
 
     class StepsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView stepTextView;
+        @BindView(R.id.stepsTextView) TextView stepTextView;
 
         StepsViewHolder(View itemView) {
             super(itemView);
-            stepTextView = itemView.findViewById(R.id.stepsTextView);
+
+            ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(this);
         }
 
@@ -61,7 +66,6 @@ public class StepAdapter extends RecyclerView.Adapter<StepAdapter.StepsViewHolde
 
         @Override
         public void onClick(View view) {
-//            EventBus.getDefault().post(new StepEvent(steps.get(getAdapterPosition())));
             listItemClickedListener.onListItemClicked(steps.get(getAdapterPosition()), recipe);
         }
     }
