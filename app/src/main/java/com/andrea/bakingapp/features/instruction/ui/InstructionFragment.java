@@ -4,6 +4,7 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,12 @@ import com.andrea.bakingapp.base.BaseFragment;
 import com.andrea.bakingapp.dagger.component.DaggerInstructionComponent;
 import com.andrea.bakingapp.features.instruction.InstructionContract;
 import com.andrea.bakingapp.features.instruction.logic.InstructionPresenter;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
+import com.google.android.exoplayer2.source.TrackGroupArray;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 
 import javax.inject.Inject;
@@ -31,7 +37,7 @@ import static android.view.View.VISIBLE;
 import static com.andrea.bakingapp.application.BakingApplication.getDagger;
 import static com.andrea.bakingapp.features.common.ActivityConstants.STEP;
 
-public class InstructionFragment extends BaseFragment implements InstructionContract.View {
+public class InstructionFragment extends BaseFragment implements InstructionContract.View, ExoPlayer.EventListener {
 
     @Inject
     InstructionPresenter presenter;
@@ -63,6 +69,7 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
         }
 
         presenter.connectView(this, savedInstanceState, getBundle(getActivity().getIntent().getExtras(), getArguments()), inTabletMode);
+        presenter.initializeMediaSession();
 
         return rootView;
     }
@@ -151,8 +158,52 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     }
 
     @Override
+    public void showPlayerError(@NonNull String errorTitle, @NonNull String errorMessage) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity())
+                .setTitle(errorTitle)
+                .setMessage(errorMessage)
+                .setPositiveButton(android.R.string.ok, (dialogInterface, i) -> {
+                    // do nothing
+                });
+        builder.create();
+        builder.show();
+    }
+
+    @Override
     public void finishScreen() {
         finishActivity();
+    }
+    // endregion
+
+    // region ExoPlayer Media Session methods
+    @Override
+    public void onTimelineChanged(Timeline timeline, Object manifest) {
+
+    }
+
+    @Override
+    public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+    }
+
+    @Override
+    public void onLoadingChanged(boolean isLoading) {
+
+    }
+
+    @Override
+    public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+        presenter.onPlayerStateChange(playWhenReady, playbackState);
+    }
+
+    @Override
+    public void onPlayerError(ExoPlaybackException error) {
+        presenter.onPlayerError(error);
+    }
+
+    @Override
+    public void onPositionDiscontinuity() {
+
     }
     // endregion
 }

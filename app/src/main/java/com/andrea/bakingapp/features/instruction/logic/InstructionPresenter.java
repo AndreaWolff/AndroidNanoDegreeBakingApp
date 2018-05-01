@@ -5,12 +5,16 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 
 import com.andrea.bakingapp.R;
 import com.andrea.bakingapp.features.common.domain.Recipe;
 import com.andrea.bakingapp.features.common.domain.Step;
 import com.andrea.bakingapp.features.instruction.InstructionContract;
 import com.google.android.exoplayer2.DefaultLoadControl;
+import com.google.android.exoplayer2.ExoPlaybackException;
+import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -27,6 +31,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static com.andrea.bakingapp.features.common.ActivityConstants.MEDIA_SESSION_TAG;
 import static com.andrea.bakingapp.features.common.ActivityConstants.RECIPE;
 import static com.andrea.bakingapp.features.common.ActivityConstants.STEP;
 
@@ -39,6 +44,8 @@ public class InstructionPresenter {
     private Recipe recipe;
     private Step step;
     private boolean inTabletMode;
+    private MediaSessionCompat mediaSession;
+    private PlaybackStateCompat.Builder stateBuilder;
 
     @Inject
     InstructionPresenter(@NonNull Context context) {
@@ -52,6 +59,7 @@ public class InstructionPresenter {
         if (savedInstanceState != null) {
             recipe = savedInstanceState.getParcelable(RECIPE);
             step = savedInstanceState.getParcelable(STEP);
+
             init();
             return;
         }
@@ -169,6 +177,39 @@ public class InstructionPresenter {
         }
     }
 
+    public void initializeMediaSession() {
+        mediaSession = new MediaSessionCompat(context, MEDIA_SESSION_TAG);
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mediaSession.setMediaButtonReceiver(null);
+        stateBuilder = new PlaybackStateCompat.Builder().setActions(PlaybackStateCompat.ACTION_PLAY |
+                                                                    PlaybackStateCompat.ACTION_PAUSE |
+                                                                    PlaybackStateCompat.ACTION_PLAY_PAUSE);
+        mediaSession.setPlaybackState(stateBuilder.build());
+        mediaSession.setCallback(new ExoPlayerMediaSessionCallback());
+        mediaSession.setActive(true);
+    }
+
+    public void onPlayerStateChange(boolean playWhenReady, int playbackState) {
+        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
+            stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, simpleExoPlayer.getCurrentPosition(), 1f);
+        } else if((playbackState == ExoPlayer.STATE_READY)){
+            stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, simpleExoPlayer.getCurrentPosition(), 1f);
+        }
+
+        mediaSession.setPlaybackState(stateBuilder.build());
+    }
+
+    public void onPlayerError(ExoPlaybackException error) {
+        if (view != null) {
+            if (error.getMessage() == null) {
+                view.showPlayerError(context.getString(R.string.error_title), context.getString(R.string.error_no_message));
+                return;
+            }
+
+            view.showPlayerError(context.getString(R.string.error_title), error.getMessage());
+        }
+    }
+
     private void configureInstructionDetails(List<Step> stepList, int currentIndex) {
         this.step = stepList.get(currentIndex);
         releasePlayer();
@@ -244,6 +285,22 @@ public class InstructionPresenter {
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
             simpleExoPlayer = null;
+        }
+
+        if (mediaSession != null) {
+            mediaSession.setActive(true);
+        }
+    }
+
+    private class ExoPlayerMediaSessionCallback extends MediaSessionCompat.Callback {
+        @Override
+        public void onPlay() {
+            simpleExoPlayer.setPlayWhenReady(true);
+        }
+
+        @Override
+        public void onPause() {
+            simpleExoPlayer.setPlayWhenReady(false);
         }
     }
 }

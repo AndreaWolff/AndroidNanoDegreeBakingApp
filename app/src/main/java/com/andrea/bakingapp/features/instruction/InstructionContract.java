@@ -25,6 +25,8 @@ public interface InstructionContract {
 
         void hidePreviousButton();
 
+        void showPlayerError(@NonNull String errorTitle, @NonNull String errorMessage);
+
         void finishScreen();
 
     }
