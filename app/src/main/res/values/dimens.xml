@@ -1,10 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!--
-Refer to App Widget Documentation for margin information
-http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
-    -->
+    <!-- Standard Sizing -->
+    <dimen name="match_constraint">0dp</dimen>
+    <dimen name="min_width">1dp</dimen>
+    <dimen name="padding_standard_quarter">4dp</dimen>
+    <dimen name="padding_standard_half">8dp</dimen>
+    <dimen name="padding_standard">16dp</dimen>
+    <dimen name="padding_20">20dp</dimen>
+
+    <!-- Recipe List Item -->
+    <dimen name="recipe_image_width">100dp</dimen>
+    <dimen name="recipe_image_height">100dp</dimen>
+
+    <!-- Details Activity/Fragment -->
+    <dimen name="details_recipe_width">350dp</dimen>
+
+    <!-- Instruction Activity/Fragment -->
+    <dimen name="exo_player_height">300dp</dimen>
+    <dimen name="action_button_min_width">100dp</dimen>
+
+    <!-- Widget -->
     <dimen name="widget_margin">8dp</dimen>
 
 </resources>

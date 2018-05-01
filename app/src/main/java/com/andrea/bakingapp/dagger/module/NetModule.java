@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 @Module
 public class NetModule {
 
-    private String BASE_URL;
+    private final String BASE_URL;
 
     public NetModule(@NonNull String BASE_URL) {
         this.BASE_URL = BASE_URL;

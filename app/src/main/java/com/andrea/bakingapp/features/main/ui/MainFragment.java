@@ -10,7 +10,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.andrea.bakingapp.R;
 import com.andrea.bakingapp.base.BaseFragment;
@@ -47,9 +46,9 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
                            .build()
                            .inject(this);
 
-        binding.recipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), this.getResources().getInteger(R.integer.grid_column)));
-        binding.recipeRecyclerView.setHasFixedSize(true);
-        binding.recipeRecyclerView.setNestedScrollingEnabled(false);
+        binding.mainRecipeRecyclerView.setLayoutManager(new GridLayoutManager(getContext(), this.getResources().getInteger(R.integer.grid_column)));
+        binding.mainRecipeRecyclerView.setHasFixedSize(true);
+        binding.mainRecipeRecyclerView.setNestedScrollingEnabled(false);
 
         presenter.connectView(this);
 
@@ -66,7 +65,7 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
     @Override
     public void showRecipeList(@NonNull List<Recipe> recipes) {
         RecipeAdapter adapter = new RecipeAdapter(this, recipes);
-        binding.recipeRecyclerView.setAdapter(adapter);
+        binding.mainRecipeRecyclerView.setAdapter(adapter);
     }
 
     @Override
@@ -93,12 +92,12 @@ public class MainFragment extends BaseFragment implements MainContract.View, Rec
 
     @Override
     public void showLoadingIndicator() {
-        binding.recipeLoadingIndicator.setVisibility(VISIBLE);
+        binding.mainRecipeLoadingIndicator.setVisibility(VISIBLE);
     }
 
     @Override
     public void hideLoadingIndicator() {
-        binding.recipeLoadingIndicator.setVisibility(GONE);
+        binding.mainRecipeLoadingIndicator.setVisibility(GONE);
     }
     // endregion
 

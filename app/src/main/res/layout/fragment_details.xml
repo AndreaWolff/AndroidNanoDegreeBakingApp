@@ -12,16 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:clipToPadding="false"
-        android:padding="16dp"
+        android:padding="@dimen/padding_standard"
         >
 
         <TextView
-            android:id="@+id/ingredientsLabel"
+            android:id="@+id/detailsIngredientsLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginEnd="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard_quarter"
             android:text="@string/details_ingredients_instructions"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -30,44 +30,61 @@
             />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/ingredientsRecyclerView"
+            android:id="@+id/detailsIngredientsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
-            android:elevation="4dp"
-            android:paddingBottom="4dp"
-            android:paddingTop="4dp"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:background="@color/white"
+            android:elevation="@dimen/padding_standard_quarter"
+            android:paddingBottom="@dimen/padding_standard_quarter"
+            android:paddingTop="@dimen/padding_standard_quarter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredientsLabel"
+            app:layout_constraintTop_toBottomOf="@+id/detailsIngredientsLabelTextView"
             />
 
         <TextView
-            android:id="@+id/stepsLabel"
+            android:id="@+id/detailsStepsLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginEnd="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard"
             android:text="@string/details_step_instructions"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ingredientsRecyclerView"
+            app:layout_constraintTop_toBottomOf="@+id/detailsIngredientsRecyclerView"
             tools:text="Below are the instructions for this recipe:"
             />
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/stepsRecyclerView"
+            android:id="@+id/detailsStepsRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:background="#FFFFFF"
-            android:elevation="4dp"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:background="@color/white"
+            android:elevation="@dimen/padding_standard_quarter"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/stepsLabel"
+            app:layout_constraintTop_toBottomOf="@+id/detailsStepsLabelTextView"
             />
+
+        <TextView
+            android:id="@+id/detailsWidgetReadyTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:text="@string/details_widget_ready_for_use"
+            android:textSize="14sp"
+            android:textStyle="italic"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/detailsStepsRecyclerView"
+            app:layout_constraintVertical_bias="0.0"/>
 
     </android.support.constraint.ConstraintLayout>
 

@@ -8,6 +8,7 @@
     <!-- Details Activity/Fragment -->
     <string name="details_ingredients_instructions">Below are the ingredients for this recipe:</string>
     <string name="details_step_instructions">Below are the steps for this recipe:</string>
+    <string name="details_widget_ready_for_use">Note: You can now use the Baking Time widget to get the ingredients for this recipe!</string>
 
     <!-- Instruction Activity/Fragment -->
     <string name="instruction_app_name">bakingApp</string>

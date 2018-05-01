@@ -22,24 +22,12 @@ public class Ingredient implements Parcelable {
         return this.quantity;
     }
 
-    public void setQuantity(float quantity) {
-        this.quantity = quantity;
-    }
-
     @NonNull public String getMeasure() {
         return measure;
     }
 
-    public void setMeasure(@NonNull String measure) {
-        this.measure = measure;
-    }
-
     @NonNull public String getIngredient() {
         return ingredient;
-    }
-
-    public void setIngredient(@NonNull String ingredient) {
-        this.ingredient = ingredient;
     }
 
     protected Ingredient(Parcel in) {

@@ -8,14 +8,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.andrea.bakingapp.widget.BakingWidgetProvider;
-import com.andrea.bakingapp.features.common.ActivityConstants;
 import com.andrea.bakingapp.features.common.domain.Recipe;
 import com.andrea.bakingapp.features.details.DetailsContract;
 import com.google.gson.Gson;
 
 import javax.inject.Inject;
 
+import static android.appwidget.AppWidgetManager.EXTRA_APPWIDGET_ID;
+import static android.appwidget.AppWidgetManager.INVALID_APPWIDGET_ID;
+import static android.content.Context.MODE_PRIVATE;
 import static com.andrea.bakingapp.features.common.ActivityConstants.RECIPE;
+import static com.andrea.bakingapp.features.common.ActivityConstants.SHARED_PREFERENCES;
+import static com.andrea.bakingapp.features.common.ActivityConstants.WIDGET;
 
 public class DetailsPresenter {
 
@@ -53,6 +57,7 @@ public class DetailsPresenter {
 
             view.showIngredients(recipe.getIngredients());
             view.showSteps(recipe.getSteps(), recipe);
+
             configureWidget();
         }
     }
@@ -67,12 +72,12 @@ public class DetailsPresenter {
 
     private void configureWidget() {
         // This widget code was inspired by https://github.com/amanjeetsingh150/Baking-App
-        SharedPreferences sharedPreferences = context.getSharedPreferences(ActivityConstants.SHARED_PREFERENCES, Context.MODE_PRIVATE);
-        sharedPreferences.edit().putString(ActivityConstants.WIDGET_RESULT, new Gson().toJson(recipe)).apply();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SHARED_PREFERENCES, MODE_PRIVATE);
+        sharedPreferences.edit().putString(WIDGET, new Gson().toJson(recipe)).apply();
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-        int appWidgetId = new Bundle().getInt(AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
-        BakingWidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId, recipe, recipe.getIngredients());
+        int appWidgetId = new Bundle().getInt(EXTRA_APPWIDGET_ID, INVALID_APPWIDGET_ID);
+        BakingWidgetProvider.updateAppWidget(context, appWidgetManager, appWidgetId, recipe);
     }
 
 }

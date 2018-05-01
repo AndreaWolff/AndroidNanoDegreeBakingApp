@@ -42,8 +42,8 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     @Inject
     InstructionPresenter presenter;
 
-    @BindView(R.id.instructionVideo) SimpleExoPlayerView simpleExoPlayerView;
-    @BindView(R.id.instructionNoVideo) ImageView instructionNoImageView;
+    @BindView(R.id.instructionVideoExoPlayerView) SimpleExoPlayerView simpleExoPlayerView;
+    @BindView(R.id.instructionNoVideoImageView) ImageView instructionNoImageView;
     @BindView(R.id.instructionLabelTextView) TextView instructionLabelTextView;
     @BindView(R.id.instructionTextView) TextView instructionTextView;
     @BindView(R.id.nextButton) Button nextButton;
@@ -58,9 +58,9 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
         ButterKnife.bind(this, rootView);
 
         DaggerInstructionComponent.builder()
-                .appComponent(getDagger())
-                .build()
-                .inject(this);
+                                  .appComponent(getDagger())
+                                  .build()
+                                  .inject(this);
 
         simpleExoPlayerView.setDefaultArtwork(BitmapFactory.decodeResource(getResources(), R.drawable.icon_no_video));
 

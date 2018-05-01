@@ -31,9 +31,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import static android.support.v4.media.session.MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS;
+import static android.support.v4.media.session.MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PAUSED;
+import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING;
 import static com.andrea.bakingapp.features.common.ActivityConstants.MEDIA_SESSION_TAG;
 import static com.andrea.bakingapp.features.common.ActivityConstants.RECIPE;
 import static com.andrea.bakingapp.features.common.ActivityConstants.STEP;
+import static com.google.android.exoplayer2.ExoPlayer.STATE_READY;
 
 public class InstructionPresenter {
 
@@ -41,11 +46,11 @@ public class InstructionPresenter {
 
     private InstructionContract.View view;
     private SimpleExoPlayer simpleExoPlayer;
+    private MediaSessionCompat mediaSession;
+    private PlaybackStateCompat.Builder stateBuilder;
     private Recipe recipe;
     private Step step;
     private boolean inTabletMode;
-    private MediaSessionCompat mediaSession;
-    private PlaybackStateCompat.Builder stateBuilder;
 
     @Inject
     InstructionPresenter(@NonNull Context context) {
@@ -117,26 +122,17 @@ public class InstructionPresenter {
             if (this.step.getId() == step.getId()) {
                 currentIndex = step.getId();
                 currentIndex += 1;
-
-                int stepID = stepList.get(currentIndex).getId();
-                if (stepID >= 1) {
-                    if (view != null) {
-                        view.showPreviousButton();
-                    }
-                }
-
-                if (stepID == 0) {
-                    if (view != null) {
-                        view.hidePreviousButton();
-                    }
-                }
+                configurePreviousButton(stepList, currentIndex);
 
                 if (stepList.get(currentIndex) != null && currentIndex < stepList.size()) {
                     configureInstructionDetails(stepList, currentIndex);
 
                     if (currentIndex == stepList.size() - 1) {
-                        view.hideNextButton();
+                        if (view != null) {
+                            view.hideNextButton();
+                        }
                     }
+
                     break;
                 }
             }
@@ -154,13 +150,7 @@ public class InstructionPresenter {
         for (Step step : stepList) {
             if (this.step.getId() == step.getId()) {
                 currentIndex = step.getId();
-
-                if (currentIndex == stepList.size() -1) {
-                    if (view != null) {
-                        view.showNextButton();
-                    }
-                }
-
+                configureNextButton(stepList, currentIndex);
                 currentIndex -= 1;
 
                 if (stepList.get(currentIndex) != null && currentIndex < stepList.size()) {
@@ -171,6 +161,7 @@ public class InstructionPresenter {
                             view.hidePreviousButton();
                         }
                     }
+
                     break;
                 }
             }
@@ -179,7 +170,7 @@ public class InstructionPresenter {
 
     public void initializeMediaSession() {
         mediaSession = new MediaSessionCompat(context, MEDIA_SESSION_TAG);
-        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mediaSession.setFlags(FLAG_HANDLES_MEDIA_BUTTONS | FLAG_HANDLES_TRANSPORT_CONTROLS);
         mediaSession.setMediaButtonReceiver(null);
         stateBuilder = new PlaybackStateCompat.Builder().setActions(PlaybackStateCompat.ACTION_PLAY |
                                                                     PlaybackStateCompat.ACTION_PAUSE |
@@ -190,10 +181,10 @@ public class InstructionPresenter {
     }
 
     public void onPlayerStateChange(boolean playWhenReady, int playbackState) {
-        if ((playbackState == ExoPlayer.STATE_READY) && playWhenReady) {
-            stateBuilder.setState(PlaybackStateCompat.STATE_PLAYING, simpleExoPlayer.getCurrentPosition(), 1f);
-        } else if((playbackState == ExoPlayer.STATE_READY)){
-            stateBuilder.setState(PlaybackStateCompat.STATE_PAUSED, simpleExoPlayer.getCurrentPosition(), 1f);
+        if ((playbackState == STATE_READY) && playWhenReady) {
+            stateBuilder.setState(STATE_PLAYING, simpleExoPlayer.getCurrentPosition(), 1f);
+        } else if((playbackState == STATE_READY)){
+            stateBuilder.setState(STATE_PAUSED, simpleExoPlayer.getCurrentPosition(), 1f);
         }
 
         mediaSession.setPlaybackState(stateBuilder.build());
@@ -201,6 +192,7 @@ public class InstructionPresenter {
 
     public void onPlayerError(ExoPlaybackException error) {
         if (view != null) {
+
             if (error.getMessage() == null) {
                 view.showPlayerError(context.getString(R.string.error_title), context.getString(R.string.error_no_message));
                 return;
@@ -211,10 +203,10 @@ public class InstructionPresenter {
     }
 
     private void configureInstructionDetails(List<Step> stepList, int currentIndex) {
-        this.step = stepList.get(currentIndex);
+        step = stepList.get(currentIndex);
         releasePlayer();
-        configureInstructionDescriptions(this.step.getShortDescription(), this.step.getDescription());
-        configureInstructionVideo(this.step.getVideoURL(), this.step.getThumbnailURL());
+        configureInstructionDescriptions(step.getShortDescription(), step.getDescription());
+        configureInstructionVideo(step.getVideoURL(), step.getThumbnailURL());
     }
 
     private void configureInstructionDescriptions(String shortDescription, String description) {
@@ -261,6 +253,29 @@ public class InstructionPresenter {
         }
     }
 
+    private void configureNextButton(List<Step> stepList, int currentIndex) {
+        if (currentIndex == stepList.size() -1) {
+            if (view != null) {
+                view.showNextButton();
+            }
+        }
+    }
+
+    private void configurePreviousButton(List<Step> stepList, int currentIndex) {
+        int stepID = stepList.get(currentIndex).getId();
+        if (stepID >= 1) {
+            if (view != null) {
+                view.showPreviousButton();
+            }
+        }
+
+        if (stepID == 0) {
+            if (view != null) {
+                view.hidePreviousButton();
+            }
+        }
+    }
+
     private void initializePlayer(Uri uri) {
         if (simpleExoPlayer == null) {
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -288,7 +303,7 @@ public class InstructionPresenter {
         }
 
         if (mediaSession != null) {
-            mediaSession.setActive(true);
+            mediaSession.setActive(false);
         }
     }
 

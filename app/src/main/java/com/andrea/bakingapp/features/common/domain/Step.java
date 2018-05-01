@@ -5,8 +5,6 @@ import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
-import com.google.gson.annotations.SerializedName;
-
 public class Step implements Parcelable {
 
     private int id;
@@ -31,40 +29,20 @@ public class Step implements Parcelable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     @NonNull public String getShortDescription() {
         return shortDescription;
-    }
-
-    public void setShortDescription(@NonNull String shortDescription) {
-        this.shortDescription = shortDescription;
     }
 
     @NonNull public String getDescription() {
         return description;
     }
 
-    public void setDescription(@NonNull String description) {
-        this.description = description;
-    }
-
     @NonNull public String getVideoURL() {
         return videoURL != null ? videoURL : "";
     }
 
-    public void setVideoURL(@NonNull String videoURL) {
-        this.videoURL = videoURL;
-    }
-
     @NonNull public String getThumbnailURL() {
         return thumbnailURL != null ? thumbnailURL : "";
-    }
-
-    public void setThumbnailURL(@NonNull String thumbnailURL) {
-        this.thumbnailURL = thumbnailURL;
     }
 
     protected Step(Parcel in) {

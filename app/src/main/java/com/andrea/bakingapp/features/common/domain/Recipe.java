@@ -3,9 +3,6 @@ package com.andrea.bakingapp.features.common.domain;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
-import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,52 +34,24 @@ public class Recipe implements Parcelable {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @NonNull
-    public String getName() {
+    @NonNull public String getName() {
         return name;
     }
 
-    public void setName(@NonNull String name) {
-        this.name = name;
-    }
-
-    @NonNull
-    public List<Ingredient> getIngredients() {
+    @NonNull public List<Ingredient> getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(@NonNull List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    @NonNull
-    public List<Step> getSteps() {
+    @NonNull public List<Step> getSteps() {
         return steps;
-    }
-
-    public void setSteps(@NonNull List<Step> steps) {
-        this.steps = steps;
     }
 
     public int getServings() {
         return servings;
     }
 
-    public void setServings(int servings) {
-        this.servings = servings;
-    }
-
-    @NonNull
-    public String getImage() {
+    @NonNull public String getImage() {
         return image != null ? image : "";
-    }
-
-    public void setImage(@NonNull String image) {
-        this.image = image;
     }
 
     protected Recipe(Parcel in) {

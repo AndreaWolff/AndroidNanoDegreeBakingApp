@@ -14,6 +14,11 @@ import com.andrea.bakingapp.util.GlideUtil;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static java.lang.String.valueOf;
+
 public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeViewHolder> {
 
     private List<Recipe> recipeList;
@@ -46,21 +51,21 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.RecipeView
 
     class RecipeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
-        private TextView recipeNameTextView;
-        private TextView recipeServingSize;
-        private ImageView recipeImage;
+        @BindView(R.id.recipeNameTextView) TextView recipeNameTextView;
+        @BindView(R.id.recipeServingSizeTextView) TextView recipeServingSize;
+        @BindView(R.id.recipeImage) ImageView recipeImage;
 
         RecipeViewHolder(@NonNull View itemView) {
             super(itemView);
-            recipeNameTextView = itemView.findViewById(R.id.recipeNameTextView);
-            recipeServingSize = itemView.findViewById(R.id.recipeServingSize);
-            recipeImage = itemView.findViewById(R.id.recipeImage);
+
+            ButterKnife.bind(this, itemView);
+
             itemView.setOnClickListener(this);
         }
 
         void bind(int listItem) {
             recipeNameTextView.setText(recipeList.get(listItem).getName());
-            recipeServingSize.setText(String.valueOf(recipeList.get(listItem).getServings()));
+            recipeServingSize.setText(valueOf(recipeList.get(listItem).getServings()));
 
             GlideUtil.displayImage(recipeList.get(listItem).getImage(), recipeImage);
         }

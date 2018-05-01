@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
+@SuppressWarnings("unchecked")
 public class RecipeTest {
 
     @Test
@@ -18,7 +19,7 @@ public class RecipeTest {
         }};
 
         ArrayList steps = new ArrayList() {{
-            add(new Step(1, "Recipe Instructions", "These are the recipe instructons.", "", ""));
+            add(new Step(1, "Recipe Instructions", "These are the recipe instructions.", "", ""));
         }};
 
         Recipe recipe = new Recipe(1, "Brownies", ingredients, steps, 8, "");

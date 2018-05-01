@@ -40,7 +40,7 @@ public class RecipeNavigationTest {
         // Verify Recipe Menu contains recipes
         onView(withText("Yellow Cake")).check(matches(isDisplayed())).perform(click());
 
-        // Verify Recipe Ingredient and Steps are displayed
+        // Verify Recipe Ingredients and Steps are displayed
         Thread.sleep(500);
         onView(withText("Yellow Cake")).check(matches(withText("Yellow Cake")));
         onView(withText("salt")).check(matches(isDisplayed()));
@@ -49,11 +49,11 @@ public class RecipeNavigationTest {
 
         onView(withText("Recipe Introduction")).check(matches(isDisplayed())).perform(click());
 
-        // Verify Recipe Instruction loaded and displays information
+        // Verify Recipe Instruction is loaded and displays information
         onView(withText("Yellow Cake")).check(matches(isDisplayed()));
         onView(withText("This recipe will teach you how to bake a Yellow Cake.")).check(matches(isDisplayed()));
 
-        // Verify Recipe Instruction action buttons navigate through the pages
+        // Verify Recipe Instruction action buttons navigate through the steps
         onView(withId(R.id.nextButton)).check(matches(isDisplayed()));
         onView(withId(R.id.previousButton)).check(matches(not(isDisplayed())));
         onView(withId(R.id.nextButton)).perform(click()).perform(click());

@@ -12,6 +12,9 @@ import com.andrea.bakingapp.features.common.domain.Ingredient;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.andrea.bakingapp.util.ConversionUtil.convertToInteger;
 import static com.andrea.bakingapp.util.ConversionUtil.convertToMeasurementName;
 
@@ -41,15 +44,14 @@ public class IngredientAdapter extends RecyclerView.Adapter<IngredientAdapter.In
 
     class IngredientsViewHolder extends RecyclerView.ViewHolder {
 
-        private TextView ingredientTextView;
-        private TextView quantityTextView;
-        private TextView measureTextView;
+        @BindView(R.id.ingredientTextView) TextView ingredientTextView;
+        @BindView(R.id.quantityTextView) TextView quantityTextView;
+        @BindView(R.id.measureTextView) TextView measureTextView;
 
         IngredientsViewHolder(View itemView) {
             super(itemView);
-            ingredientTextView = itemView.findViewById(R.id.ingredientTextView);
-            quantityTextView = itemView.findViewById(R.id.quantityTextView);
-            measureTextView = itemView.findViewById(R.id.measureTextView);
+
+            ButterKnife.bind(this, itemView);
         }
 
         void bind(int listItem) {

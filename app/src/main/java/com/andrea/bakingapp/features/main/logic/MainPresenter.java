@@ -61,8 +61,8 @@ public class MainPresenter {
         }
 
         disposable.add(recipeRepository.getRecipes()
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(this::handleRecipeResponseSuccessful, this::handleResponseError));
+                  .observeOn(AndroidSchedulers.mainThread())
+                  .subscribe(this::handleRecipeResponseSuccessful, this::handleResponseError));
     }
 
     private void handleRecipeResponseSuccessful(List<Recipe> recipes) {
@@ -94,6 +94,8 @@ public class MainPresenter {
             Log.d(context.getString(R.string.error_title_caps), throwable.getMessage());
         }
 
-        view.showError(context.getString(R.string.error_title), context.getString(R.string.error_message));
+        if (view != null) {
+            view.showError(context.getString(R.string.error_title), context.getString(R.string.error_message));
+        }
     }
 }

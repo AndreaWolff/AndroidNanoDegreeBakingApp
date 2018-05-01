@@ -27,6 +27,7 @@ import javax.inject.Inject;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static android.widget.Toast.LENGTH_LONG;
 import static com.andrea.bakingapp.application.BakingApplication.getDagger;
 import static com.andrea.bakingapp.util.DividerUtil.createRecyclerViewDivider;
 
@@ -38,8 +39,8 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         void onStepClicked(@NonNull Step step, @NonNull Recipe recipe);
     }
 
-    @BindView(R.id.ingredientsRecyclerView) RecyclerView ingredientsRecyclerView;
-    @BindView(R.id.stepsRecyclerView) RecyclerView stepsRecyclerView;
+    @BindView(R.id.detailsIngredientsRecyclerView) RecyclerView ingredientsRecyclerView;
+    @BindView(R.id.detailsStepsRecyclerView) RecyclerView stepsRecyclerView;
 
     @Inject
     DetailsPresenter presenter;
@@ -77,8 +78,9 @@ public class DetailsFragment extends BaseFragment implements DetailsContract.Vie
         try {
             onStepClickedListener = (OnStepClickedListener) context;
         } catch (ClassCastException e) {
-            Toast.makeText(context, context + " must be implemented", Toast.LENGTH_LONG).show();
+            Toast.makeText(context, context + " must be implemented", LENGTH_LONG).show();
         }
+
     }
 
     @Override

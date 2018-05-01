@@ -9,7 +9,9 @@ import com.andrea.bakingapp.features.common.domain.Step;
 import java.util.List;
 
 public interface DetailsContract {
+
     interface View {
+
         void renderScreenTitle(@NonNull String title);
 
         void showIngredients(@NonNull List<Ingredient> ingredients);
@@ -17,5 +19,7 @@ public interface DetailsContract {
         void showSteps(@NonNull List<Step> steps, @NonNull Recipe recipe);
 
         void finishScreen();
+
     }
+
 }

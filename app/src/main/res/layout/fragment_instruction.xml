@@ -14,10 +14,10 @@
         >
 
         <android.support.v7.widget.CardView
-            android:id="@+id/cardview"
+            android:id="@+id/instructionCardView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardElevation="4dp"
+            app:cardElevation="@dimen/padding_standard_quarter"
             app:cardUseCompatPadding="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -25,16 +25,17 @@
             >
 
             <com.google.android.exoplayer2.ui.SimpleExoPlayerView
-                android:id="@+id/instructionVideo"
+                android:id="@+id/instructionVideoExoPlayerView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
+                android:layout_height="@dimen/exo_player_height"
+                android:padding="@dimen/padding_standard_half"
                 />
 
             <ImageView
-                android:id="@+id/instructionNoVideo"
+                android:id="@+id/instructionNoVideoImageView"
                 android:layout_width="match_parent"
-                android:layout_height="300dp"
-                android:background="#000000"
+                android:layout_height="@dimen/exo_player_height"
+                android:background="@color/black"
                 android:contentDescription="@null"
                 android:scaleType="centerInside"
                 android:src="@drawable/icon_no_video"
@@ -48,12 +49,14 @@
             android:id="@+id/instructionLabelTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginEnd="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:textSize="18sp"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cardview"
+            app:layout_constraintTop_toBottomOf="@id/instructionCardView"
             tools:text="Instruction Label"
             />
 
@@ -61,10 +64,10 @@
             android:id="@+id/instructionTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginBottom="@dimen/padding_standard_half"
+            android:layout_marginEnd="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard_half"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/instructionLabelTextView"
@@ -76,32 +79,36 @@
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:minWidth="100dp"
+            android:layout_marginBottom="@dimen/padding_standard"
+            android:layout_marginStart="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:minWidth="@dimen/action_button_min_width"
             android:text="@string/instruction_previous_button"
+            android:textSize="16sp"
             android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/instructionTextView"
             app:layout_constraintVertical_bias="1.0"
-            tools:visibility="visible"/>
+            tools:visibility="visible"
+            />
 
         <Button
             android:id="@+id/nextButton"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
-            android:minWidth="100dp"
+            android:layout_marginBottom="@dimen/padding_standard"
+            android:layout_marginEnd="@dimen/padding_standard"
+            android:layout_marginTop="@dimen/padding_standard_half"
+            android:minWidth="@dimen/action_button_min_width"
             android:text="@string/instruction_next_button"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/instructionTextView"
-            app:layout_constraintVertical_bias="1.0"/>
+            app:layout_constraintVertical_bias="1.0"
+            />
 
     </android.support.constraint.ConstraintLayout>
 

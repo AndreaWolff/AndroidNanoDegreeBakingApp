@@ -8,7 +8,9 @@ import com.andrea.bakingapp.features.common.domain.Recipe;
 import java.util.List;
 
 public interface MainContract {
+
     interface View {
+
         void showRecipeList(@NonNull List<Recipe> recipes);
 
         void showError(@NonNull String errorTitle, @NonNull String errorMessage);
@@ -20,5 +22,7 @@ public interface MainContract {
         void showLoadingIndicator();
 
         void hideLoadingIndicator();
+
     }
+
 }
