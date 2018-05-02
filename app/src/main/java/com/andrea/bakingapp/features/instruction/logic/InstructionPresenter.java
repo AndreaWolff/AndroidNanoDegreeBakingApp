@@ -81,8 +81,10 @@ public class InstructionPresenter {
 
             // To save the current position of the video I used some help from https://stackoverflow.com/questions/45481775/exoplayer-restore-state-when-resumed
             currentPosition = savedInstanceState.getLong(CURRENT_POSITION, C.TIME_UNSET);
+            playWhenReady = savedInstanceState.getBoolean(PLAY_WHEN_READY);
             if (currentPosition != C.TIME_UNSET) {
                 simpleExoPlayer.seekTo(currentPosition);
+                simpleExoPlayer.setPlayWhenReady(playWhenReady);
             }
 
             init();
