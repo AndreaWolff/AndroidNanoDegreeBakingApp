@@ -148,7 +148,7 @@ public class InstructionPresenter {
     }
 
     public void onPause() {
-        // As per the last reviewer comments, I added these checks in but they caused buggy behaviour on configuration change and restoring the current position.
+        // As per the last reviewer comments I added these checks in but they caused buggy behaviour on configuration change and restoring the current position.
         // After removing these checks the restoration of the current position worked again. Even though the releasePlayer() is being called in onPause()
         // and onStop(), after a lot of testing this is only triggered once. Thanks for the suggestion!
 //        if (SDK_INT <= 23) {
