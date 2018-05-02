@@ -16,6 +16,8 @@ public interface InstructionContract {
 
         void hideVideo();
 
+//        void showThumbnailImage(@NonNull String thumbnailURL);
+
         void setPlayer(@NonNull SimpleExoPlayer simpleExoPlayer);
 
         void showNextButton();

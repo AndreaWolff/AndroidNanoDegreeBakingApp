@@ -1,5 +1,6 @@
 package com.andrea.bakingapp.util;
 
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.widget.ImageView;
 
@@ -12,6 +13,13 @@ public class GlideUtil {
         Glide.with(imageView.getContext())
                 .load(photo)
                 .placeholder(R.drawable.icon_photo)
+                .into(imageView);
+    }
+
+    public static void displayNoVideoImage(@DrawableRes int drawableRes, @NonNull ImageView imageView) {
+        Glide.with(imageView.getContext())
+                .load(drawableRes)
+                .placeholder(drawableRes)
                 .into(imageView);
     }
 }

@@ -17,6 +17,7 @@ import com.andrea.bakingapp.base.BaseFragment;
 import com.andrea.bakingapp.dagger.component.DaggerInstructionComponent;
 import com.andrea.bakingapp.features.instruction.InstructionContract;
 import com.andrea.bakingapp.features.instruction.logic.InstructionPresenter;
+import com.andrea.bakingapp.util.GlideUtil;
 import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayer;
 import com.google.android.exoplayer2.SimpleExoPlayer;
@@ -103,6 +104,12 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        presenter.onPause();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
@@ -130,7 +137,18 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     public void hideVideo() {
         simpleExoPlayerView.setVisibility(INVISIBLE);
         instructionNoImageView.setVisibility(VISIBLE);
+        GlideUtil.displayNoVideoImage(R.drawable.icon_no_video, instructionNoImageView);
     }
+
+    // I have attempted to set the Thumbnail video into an imageView via Glide but was unsuccessful as Glide does not take mp4 URLs from a network connection.
+//    @Override
+//    public void showThumbnailImage(String thumbnailURL) {
+//        Glide.with(this)
+//                .load(thumbnailURL)
+//                .asBitmap()
+//                .placeholder(R.drawable.icon_no_video)
+//                .into(instructionNoImageView);
+//    }
 
     @Override
     public void setPlayer(@NonNull SimpleExoPlayer simpleExoPlayer) {
