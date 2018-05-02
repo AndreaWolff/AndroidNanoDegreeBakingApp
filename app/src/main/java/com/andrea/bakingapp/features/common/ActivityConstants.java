@@ -5,6 +5,9 @@ public class ActivityConstants {
     public static final String RECIPE = "recipe";
     public static final String STEP = "step";
     public static final String VIDEO_URL = "video_url";
+    public static final String THUMBNAIL_URL = "thumbnail_url";
+    public static final String PLAY_VIDEO = "video_playing";
+    public static final String PLAY_THUMBNAIL = "thumbnail_playing";
 
     public static final String WIDGET = "widget";
     public static final String SHARED_PREFERENCES = "Shared Preferences";

@@ -38,9 +38,12 @@ import static android.support.v4.media.session.PlaybackStateCompat.STATE_PLAYING
 import static com.andrea.bakingapp.features.common.ActivityConstants.CURRENT_POSITION;
 import static com.andrea.bakingapp.features.common.ActivityConstants.MEDIA_SESSION_TAG;
 import static com.andrea.bakingapp.features.common.ActivityConstants.PLAYBACK_STATE;
+import static com.andrea.bakingapp.features.common.ActivityConstants.PLAY_THUMBNAIL;
+import static com.andrea.bakingapp.features.common.ActivityConstants.PLAY_VIDEO;
 import static com.andrea.bakingapp.features.common.ActivityConstants.PLAY_WHEN_READY;
 import static com.andrea.bakingapp.features.common.ActivityConstants.RECIPE;
 import static com.andrea.bakingapp.features.common.ActivityConstants.STEP;
+import static com.andrea.bakingapp.features.common.ActivityConstants.THUMBNAIL_URL;
 import static com.andrea.bakingapp.features.common.ActivityConstants.VIDEO_URL;
 import static com.google.android.exoplayer2.ExoPlayer.STATE_READY;
 
@@ -56,9 +59,12 @@ public class InstructionPresenter {
     private Step step;
     private boolean inTabletMode;
     private boolean playWhenReady;
+    private boolean isVideoPlaying;
+    private boolean isThumbnailPlaying;
     private int playbackState;
     private long currentPosition;
     private String videoURL;
+    private String thumbnailURL;
 
     @Inject
     InstructionPresenter(@NonNull Context context) {
@@ -74,9 +80,16 @@ public class InstructionPresenter {
             recipe = savedInstanceState.getParcelable(RECIPE);
             step = savedInstanceState.getParcelable(STEP);
             videoURL = savedInstanceState.getString(VIDEO_URL);
+            thumbnailURL = savedInstanceState.getString(THUMBNAIL_URL);
+            isVideoPlaying = savedInstanceState.getBoolean(PLAY_VIDEO);
+            isThumbnailPlaying = savedInstanceState.getBoolean(PLAY_THUMBNAIL);
 
-            if (videoURL != null) {
+            if (videoURL != null && isVideoPlaying) {
                 initializePlayer(Uri.parse(videoURL));
+            }
+
+            if (thumbnailURL != null && isThumbnailPlaying) {
+                initializePlayer(Uri.parse(thumbnailURL));
             }
 
             // To save the current position of the video I used some help from https://stackoverflow.com/questions/45481775/exoplayer-restore-state-when-resumed
@@ -125,14 +138,28 @@ public class InstructionPresenter {
     public void onSaveInstanceState(@NonNull Bundle outState) {
         outState.putParcelable(RECIPE, recipe);
         outState.putParcelable(STEP, step);
+        outState.putBoolean(PLAY_VIDEO, isVideoPlaying);
+        outState.putBoolean(PLAY_THUMBNAIL, isThumbnailPlaying);
         outState.putString(VIDEO_URL, videoURL);
+        outState.putString(THUMBNAIL_URL, thumbnailURL);
         outState.putBoolean(PLAY_WHEN_READY, playWhenReady);
         outState.putInt(PLAYBACK_STATE, playbackState);
         outState.putLong(CURRENT_POSITION, currentPosition);
     }
 
     public void onPause() {
-        releasePlayer();
+        // As per the last reviewer comments, I added these checks in but they caused buggy behaviour on configuration change and restoring the current position.
+        // After removing these checks the restoration of the current position worked again. Even though the releasePlayer() is being called in onPause()
+        // and onStop(), after a lot of testing this is only triggered once. Thanks for the suggestion!
+//        if (SDK_INT <= 23) {
+            releasePlayer();
+//        }
+    }
+
+    public void onStop() {
+//        if (SDK_INT > 23) {
+            releasePlayer();
+//        }
     }
 
     public void onViewDestroyed() {
@@ -219,7 +246,7 @@ public class InstructionPresenter {
 
         if ((playbackState == STATE_READY) && playWhenReady) {
             stateBuilder.setState(STATE_PLAYING, simpleExoPlayer.getCurrentPosition(), 1f);
-        } else if((playbackState == STATE_READY)){
+        } else if ((playbackState == STATE_READY)) {
             stateBuilder.setState(STATE_PAUSED, simpleExoPlayer.getCurrentPosition(), 1f);
         }
 
@@ -256,21 +283,30 @@ public class InstructionPresenter {
     }
 
     private void configureInstructionVideo(String videoURL, String thumbnailURL) {
+
         if (view != null) {
             if (!videoURL.isEmpty()) {
                 this.videoURL = videoURL;
+                isVideoPlaying = true;
+                isThumbnailPlaying = false;
                 view.showVideo();
                 initializePlayer(Uri.parse(videoURL));
                 return;
             }
 
-            // I have kept the Thumbnail Url displaying via Exoplayer because all videos (thumbnail included) are required to be displayed by Exoplayer,
-            // as per the project requirements. I have commented out showThumbnailImage() using Glide, but as this did not show any videos I did not
-            // think this was a great user experience.
             if (!thumbnailURL.isEmpty()) {
-                view.showVideo();
-                initializePlayer(Uri.parse(videoURL));
-//                view.showThumbnailImage(thumbnailURL);
+                // This checks to see if the thumbnail url is an .mp4, if so it should be displayed via the ExoPlayer.
+                if (thumbnailURL.contains(".mp4")) {
+                    this.thumbnailURL = thumbnailURL;
+                    isVideoPlaying = false;
+                    isThumbnailPlaying = true;
+                    view.showVideo();
+                    initializePlayer(Uri.parse(thumbnailURL));
+                    return;
+                }
+
+                // This will show any non-movie thumbnail using Glide.
+                view.showThumbnailImage(thumbnailURL);
                 return;
             }
 
@@ -287,7 +323,7 @@ public class InstructionPresenter {
         }
 
         List<Step> steps = recipe.getSteps();
-        if (step.getId() == steps.size() -1) {
+        if (step.getId() == steps.size() - 1) {
             if (view != null) {
                 view.hideNextButton();
             }
@@ -295,7 +331,7 @@ public class InstructionPresenter {
     }
 
     private void configureNextButton(List<Step> stepList, int currentIndex) {
-        if (currentIndex == stepList.size() -1) {
+        if (currentIndex == stepList.size() - 1) {
             if (view != null) {
                 view.showNextButton();
             }
@@ -329,8 +365,8 @@ public class InstructionPresenter {
 
             String userAgent = Util.getUserAgent(context, context.getString(R.string.instruction_app_name));
             MediaSource mediaSource = new ExtractorMediaSource(uri,
-                                                               new DefaultDataSourceFactory(context, userAgent),
-                                                               new DefaultExtractorsFactory(), null, null);
+                    new DefaultDataSourceFactory(context, userAgent),
+                    new DefaultExtractorsFactory(), null, null);
             simpleExoPlayer.prepare(mediaSource);
             simpleExoPlayer.setPlayWhenReady(true);
         }
@@ -339,6 +375,7 @@ public class InstructionPresenter {
     private void releasePlayer() {
         if (simpleExoPlayer != null) {
             currentPosition = simpleExoPlayer.getCurrentPosition();
+            playWhenReady = simpleExoPlayer.getPlayWhenReady();
             simpleExoPlayer.stop();
             simpleExoPlayer.release();
             simpleExoPlayer = null;

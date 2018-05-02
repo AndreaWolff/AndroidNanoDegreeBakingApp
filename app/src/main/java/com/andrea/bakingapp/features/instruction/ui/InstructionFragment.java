@@ -110,6 +110,12 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
     }
 
     @Override
+    public void onStop() {
+        super.onStop();
+        presenter.onStop();
+    }
+
+    @Override
     public void onDestroy() {
         super.onDestroy();
         presenter.onViewDestroyed();
@@ -140,15 +146,10 @@ public class InstructionFragment extends BaseFragment implements InstructionCont
         GlideUtil.displayNoVideoImage(R.drawable.icon_no_video, instructionNoImageView);
     }
 
-    // I have attempted to set the Thumbnail video into an imageView via Glide but was unsuccessful as Glide does not take mp4 URLs from a network connection.
-//    @Override
-//    public void showThumbnailImage(String thumbnailURL) {
-//        Glide.with(this)
-//                .load(thumbnailURL)
-//                .asBitmap()
-//                .placeholder(R.drawable.icon_no_video)
-//                .into(instructionNoImageView);
-//    }
+    @Override
+    public void showThumbnailImage(@NonNull String thumbnailURL) {
+        GlideUtil.displayNoVideoImage(thumbnailURL, instructionNoImageView);
+    }
 
     @Override
     public void setPlayer(@NonNull SimpleExoPlayer simpleExoPlayer) {
